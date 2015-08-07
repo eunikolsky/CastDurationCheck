@@ -1,0 +1,1 @@
+../../../ConnectSDK/modules/google-cast/CastDiscoveryProvider.h

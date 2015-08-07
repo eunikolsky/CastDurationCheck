@@ -1,0 +1,1 @@
+../../../ConnectSDK/core/Helpers/JSONObjectCoding.h

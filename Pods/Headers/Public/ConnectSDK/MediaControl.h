@@ -1,0 +1,1 @@
+../../../ConnectSDK/core/Services/Capabilities/MediaControl.h

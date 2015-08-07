@@ -1,0 +1,1 @@
+../../../ConnectSDK/core/Helpers/AppInfo.h

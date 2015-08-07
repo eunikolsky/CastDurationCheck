@@ -1,0 +1,1 @@
+../../../ConnectSDK/core/Services/Capabilities/ExternalInputControl.h

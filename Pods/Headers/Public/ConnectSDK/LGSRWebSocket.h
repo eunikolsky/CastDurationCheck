@@ -1,0 +1,1 @@
+../../../ConnectSDK/core/Frameworks/SocketRocket/LGSRWebSocket.h

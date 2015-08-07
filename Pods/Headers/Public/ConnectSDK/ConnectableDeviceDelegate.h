@@ -1,0 +1,1 @@
+../../../ConnectSDK/core/Devices/ConnectableDeviceDelegate.h

@@ -1,0 +1,2 @@
+CONNECTSDK_FRAMEWORK_SEARCH_PATHS = $(PODS_ROOT)/google-cast-sdk/GoogleCastSDK-2.6.0-Release
+CONNECTSDK_OTHER_LDFLAGS = $(inherited) -ObjC -l"icucore" -l"z" -framework "GoogleCast"

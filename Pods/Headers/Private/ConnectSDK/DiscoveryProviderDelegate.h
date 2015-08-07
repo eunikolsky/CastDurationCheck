@@ -1,0 +1,1 @@
+../../../ConnectSDK/core/Discovery/DiscoveryProviderDelegate.h

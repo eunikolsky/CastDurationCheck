@@ -1,0 +1,1 @@
+../../../ConnectSDK/core/Services/Sessions/WebAppSessionDelegate.h

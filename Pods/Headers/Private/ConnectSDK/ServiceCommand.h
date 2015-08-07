@@ -1,0 +1,1 @@
+../../../ConnectSDK/core/Services/Commands/ServiceCommand.h

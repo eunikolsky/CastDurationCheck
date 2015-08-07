@@ -1,0 +1,1 @@
+../../../ConnectSDK/core/Discovery/Providers/SSDPDiscoveryProvider_Private.h
