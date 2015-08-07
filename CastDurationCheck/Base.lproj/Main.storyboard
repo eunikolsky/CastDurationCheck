@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
@@ -15,8 +15,67 @@
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EBZ-xd-mFb">
+                                <rect key="frame" x="270.5" y="28" width="59" height="30"/>
+                                <state key="normal" title="Connect">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="connect:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="UsW-mw-tQ1"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tPT-Gs-Vxf">
+                                <rect key="frame" x="258" y="66" width="84" height="30"/>
+                                <state key="normal" title="Play video 0">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playVideo0:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="af0-dx-unD"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0l7-d0-I9s">
+                                <rect key="frame" x="258" y="104" width="84" height="30"/>
+                                <state key="normal" title="Play video 1">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playVideo1:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="yTt-Vw-Me1"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Duration" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6vR-bP-ium">
+                                <rect key="frame" x="267.5" y="142" width="65.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1FS-Ca-cyR">
+                                <rect key="frame" x="283.5" y="170.5" width="33" height="30"/>
+                                <state key="normal" title="Stop">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="stop:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="9C4-Lc-5q3"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="6vR-bP-ium" firstAttribute="top" secondItem="0l7-d0-I9s" secondAttribute="bottom" constant="8" symbolic="YES" id="3IQ-4i-Q7X"/>
+                            <constraint firstItem="EBZ-xd-mFb" firstAttribute="centerX" secondItem="0l7-d0-I9s" secondAttribute="centerX" id="E4B-iX-rkm"/>
+                            <constraint firstItem="EBZ-xd-mFb" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="8" symbolic="YES" id="Hag-BQ-TNm"/>
+                            <constraint firstItem="EBZ-xd-mFb" firstAttribute="centerX" secondItem="6vR-bP-ium" secondAttribute="centerX" id="RP3-BK-V9f"/>
+                            <constraint firstItem="tPT-Gs-Vxf" firstAttribute="top" secondItem="EBZ-xd-mFb" secondAttribute="bottom" constant="8" symbolic="YES" id="Yea-hV-4XZ"/>
+                            <constraint firstAttribute="centerX" secondItem="EBZ-xd-mFb" secondAttribute="centerX" id="e7p-5f-whP"/>
+                            <constraint firstItem="EBZ-xd-mFb" firstAttribute="centerX" secondItem="tPT-Gs-Vxf" secondAttribute="centerX" id="fen-2P-UP4"/>
+                            <constraint firstItem="0l7-d0-I9s" firstAttribute="top" secondItem="tPT-Gs-Vxf" secondAttribute="bottom" constant="8" symbolic="YES" id="pQI-i8-f6t"/>
+                            <constraint firstItem="1FS-Ca-cyR" firstAttribute="top" secondItem="6vR-bP-ium" secondAttribute="bottom" constant="8" symbolic="YES" id="pkw-D2-kqd"/>
+                            <constraint firstItem="EBZ-xd-mFb" firstAttribute="centerX" secondItem="1FS-Ca-cyR" secondAttribute="centerX" id="slQ-so-QCS"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="labelDuration" destination="6vR-bP-ium" id="WKy-nI-NBR"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
