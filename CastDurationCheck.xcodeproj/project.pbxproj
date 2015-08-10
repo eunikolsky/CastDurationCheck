@@ -15,6 +15,7 @@
 		44335B321B75574D00A695AB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44335B311B75574D00A695AB /* Images.xcassets */; };
 		44335B351B75574D00A695AB /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44335B331B75574D00A695AB /* LaunchScreen.xib */; };
 		44335B411B75574D00A695AB /* CastDurationCheckTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 44335B401B75574D00A695AB /* CastDurationCheckTests.m */; };
+		444C732E1B796D0E008A2F3D /* DevicePicker+RAC.m in Sources */ = {isa = PBXBuildFile; fileRef = 444C732D1B796D0E008A2F3D /* DevicePicker+RAC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,8 @@
 		44335B3A1B75574D00A695AB /* CastDurationCheckTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CastDurationCheckTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		44335B3F1B75574D00A695AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		44335B401B75574D00A695AB /* CastDurationCheckTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CastDurationCheckTests.m; sourceTree = "<group>"; };
+		444C732C1B796D0E008A2F3D /* DevicePicker+RAC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DevicePicker+RAC.h"; sourceTree = "<group>"; };
+		444C732D1B796D0E008A2F3D /* DevicePicker+RAC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DevicePicker+RAC.m"; sourceTree = "<group>"; };
 		85EF60CAF72A7627C1D92536 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		B05712EFB2D958AC134C8B38 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -96,6 +99,8 @@
 		44335B231B75574D00A695AB /* CastDurationCheck */ = {
 			isa = PBXGroup;
 			children = (
+				444C732C1B796D0E008A2F3D /* DevicePicker+RAC.h */,
+				444C732D1B796D0E008A2F3D /* DevicePicker+RAC.m */,
 				44335B281B75574D00A695AB /* AppDelegate.h */,
 				44335B291B75574D00A695AB /* AppDelegate.m */,
 				44335B2B1B75574D00A695AB /* ViewController.h */,
@@ -278,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				444C732E1B796D0E008A2F3D /* DevicePicker+RAC.m in Sources */,
 				44335B2D1B75574D00A695AB /* ViewController.m in Sources */,
 				44335B2A1B75574D00A695AB /* AppDelegate.m in Sources */,
 				44335B271B75574D00A695AB /* main.m in Sources */,

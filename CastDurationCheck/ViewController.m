@@ -8,9 +8,14 @@
 
 #import "ViewController.h"
 
-#import <ConnectSDK.h>
+#import "DevicePicker+RAC.h"
 
-@interface ViewController () <DevicePickerDelegate>
+#import <ConnectSDK.h>
+#import <ReactiveCocoa.h>
+
+@interface ViewController ()
+
+@property (weak, nonatomic) IBOutlet UIButton *connectButton;
 @property (weak, nonatomic) IBOutlet UILabel *labelDuration;
 
 @property (nonatomic, strong) ConnectableDevice *device;
@@ -24,14 +29,32 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
+    [RACObserve(self, device) subscribeNext:^(ConnectableDevice *device) {
+        [device connect];
+    }];
+
+    DiscoveryManager *mgr = [DiscoveryManager sharedManager];
+    RACSignal *selectDeviceSignal = mgr.devicePicker.rac_selectDeviceSignal;
+    [selectDeviceSignal subscribeNext:^(ConnectableDevice *device) {
+        self.device = device;
+    }];
+
+    RACSignal *connectEnabledSignal = [[selectDeviceSignal mapReplace:@NO]
+        startWith:@YES];
+    RACCommand *connectCommand = [[RACCommand alloc]
+        initWithEnabled:connectEnabledSignal
+            signalBlock:^RACSignal *(id input) {
+            return [RACSignal empty];
+        }];
+    [connectCommand.executionSignals subscribeNext:^(id _) {
+        [mgr.devicePicker showPicker:nil];
+    }];
+
+    self.connectButton.rac_command = connectCommand;
+
     [[DiscoveryManager sharedManager] startDiscovery];
 }
 
-- (IBAction)connect:(id)sender {
-    DiscoveryManager *mgr = [DiscoveryManager sharedManager];
-    mgr.devicePicker.delegate = self;
-    [mgr.devicePicker showPicker:nil];
-}
 - (IBAction)playVideo0:(id)sender {
     [self playVideoWithURLString:@"http://ec2-54-201-108-205.us-west-2.compute.amazonaws.com/samples/media/video.mp4"];
 }
@@ -40,12 +63,6 @@
 }
 - (IBAction)stop:(id)sender {
     [self.launchObject.mediaControl stopWithSuccess:nil failure:nil];
-}
-
-- (void)devicePicker:(DevicePicker *)picker
-     didSelectDevice:(ConnectableDevice *)device {
-    self.device = device;
-    [device connect];
 }
 
 - (void)playVideoWithURLString:(NSString *)urlString {
