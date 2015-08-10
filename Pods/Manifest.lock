@@ -15,12 +15,21 @@ PODS:
   - google-cast-sdk/Assets (2.6.0):
     - google-cast-sdk/Core
   - google-cast-sdk/Core (2.6.0)
+  - ReactiveCocoa (2.5):
+    - ReactiveCocoa/UI (= 2.5)
+  - ReactiveCocoa/Core (2.5):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.5)
+  - ReactiveCocoa/UI (2.5):
+    - ReactiveCocoa/Core
 
 DEPENDENCIES:
   - ConnectSDK
+  - ReactiveCocoa
 
 SPEC CHECKSUMS:
   ConnectSDK: b7769deaab4972cdf1ef6caf9532317ed3a0c415
   google-cast-sdk: 850015a592ee713e511e6ad1b75d3087760657c1
+  ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
 
 COCOAPODS: 0.38.2

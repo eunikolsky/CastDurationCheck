@@ -1,7 +1,7 @@
 #include "ConnectSDK.xcconfig"
 FRAMEWORK_SEARCH_PATHS = ${CONNECTSDK_FRAMEWORK_SEARCH_PATHS}
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/ConnectSDK" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/ConnectSDK" "${PODS_ROOT}/Headers/Public/google-cast-sdk"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/ConnectSDK" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/ConnectSDK" "${PODS_ROOT}/Headers/Public/ReactiveCocoa" "${PODS_ROOT}/Headers/Public/google-cast-sdk"
 OTHER_LDFLAGS = ${CONNECTSDK_OTHER_LDFLAGS}
 PODS_ROOT = ${SRCROOT}
 SKIP_INSTALL = YES

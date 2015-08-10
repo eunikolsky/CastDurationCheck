@@ -1,1 +1,2 @@
 pod "ConnectSDK"
+pod "ReactiveCocoa"

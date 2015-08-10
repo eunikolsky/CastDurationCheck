@@ -1,6 +1,6 @@
 FRAMEWORK_SEARCH_PATHS = $(PODS_ROOT)/google-cast-sdk/GoogleCastSDK-2.6.0-Release
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/ConnectSDK" "${PODS_ROOT}/Headers/Public/google-cast-sdk"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/ConnectSDK" -isystem "${PODS_ROOT}/Headers/Public/google-cast-sdk"
-OTHER_LDFLAGS = $(inherited) -ObjC -l"ConnectSDK" -l"icucore" -l"z" -framework "GoogleCast" -framework "SystemConfiguration"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/ConnectSDK" "${PODS_ROOT}/Headers/Public/ReactiveCocoa" "${PODS_ROOT}/Headers/Public/google-cast-sdk"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/ConnectSDK" -isystem "${PODS_ROOT}/Headers/Public/ReactiveCocoa" -isystem "${PODS_ROOT}/Headers/Public/google-cast-sdk"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"ConnectSDK" -l"ReactiveCocoa" -l"icucore" -l"z" -framework "GoogleCast" -framework "SystemConfiguration"
 PODS_ROOT = ${SRCROOT}/Pods
