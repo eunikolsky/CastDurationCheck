@@ -27,18 +27,12 @@
                                 <state key="normal" title="Play video 0">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <action selector="playVideo0:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="af0-dx-unD"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0l7-d0-I9s">
                                 <rect key="frame" x="258" y="104" width="84" height="30"/>
                                 <state key="normal" title="Play video 1">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <action selector="playVideo1:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="yTt-Vw-Me1"/>
-                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Duration" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6vR-bP-ium">
                                 <rect key="frame" x="267.5" y="142" width="65.5" height="20.5"/>
@@ -51,9 +45,6 @@
                                 <state key="normal" title="Stop">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <action selector="stop:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="9C4-Lc-5q3"/>
-                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -73,6 +64,9 @@
                     <connections>
                         <outlet property="connectButton" destination="EBZ-xd-mFb" id="zgd-u1-m4A"/>
                         <outlet property="labelDuration" destination="6vR-bP-ium" id="WKy-nI-NBR"/>
+                        <outlet property="playVideo0Button" destination="tPT-Gs-Vxf" id="CyU-0u-qWh"/>
+                        <outlet property="playVideo1Button" destination="0l7-d0-I9s" id="eAC-Sj-OI9"/>
+                        <outlet property="stopButton" destination="1FS-Ca-cyR" id="94p-yb-a85"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

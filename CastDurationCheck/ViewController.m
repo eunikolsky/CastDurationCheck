@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 
+#import "ConnectableDevice+RAC.h"
 #import "DevicePicker+RAC.h"
 
 #import <ConnectSDK.h>
@@ -16,6 +17,9 @@
 @interface ViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton *connectButton;
+@property (weak, nonatomic) IBOutlet UIButton *playVideo0Button;
+@property (weak, nonatomic) IBOutlet UIButton *playVideo1Button;
+@property (weak, nonatomic) IBOutlet UIButton *stopButton;
 @property (weak, nonatomic) IBOutlet UILabel *labelDuration;
 
 @property (nonatomic, strong) ConnectableDevice *device;
@@ -29,7 +33,25 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
-    [RACObserve(self, device) subscribeNext:^(ConnectableDevice *device) {
+    RACSignal *currentDeviceSignal = RACObserve(self, device);
+
+    RACSignal *deviceReadySignal = [[currentDeviceSignal filter:^BOOL(id value) {
+        return nil != value;
+    }] map:^id(ConnectableDevice *device) {
+        return device.rac_deviceReadySignal;
+    }];
+    RACSignal *buttonsEnabledSignal = [[deviceReadySignal mapReplace:@YES]
+        startWith:@NO];
+    RACCommand *deviceConnectedCommand = [[RACCommand alloc]
+        initWithEnabled:buttonsEnabledSignal
+            signalBlock:^RACSignal *(id input) {
+                return [RACSignal empty];
+            }];
+    self.playVideo0Button.rac_command = deviceConnectedCommand;
+    self.playVideo1Button.rac_command = deviceConnectedCommand;
+    self.stopButton.rac_command = deviceConnectedCommand;
+
+    [currentDeviceSignal subscribeNext:^(ConnectableDevice *device) {
         [device connect];
     }];
 
