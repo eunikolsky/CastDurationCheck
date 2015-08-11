@@ -35,9 +35,7 @@
 
     DiscoveryManager *mgr = [DiscoveryManager sharedManager];
     RACSignal *selectDeviceSignal = mgr.devicePicker.rac_selectDeviceSignal;
-    [selectDeviceSignal subscribeNext:^(ConnectableDevice *device) {
-        self.device = device;
-    }];
+    RAC(self, device) = selectDeviceSignal;
 
     RACSignal *connectEnabledSignal = [[selectDeviceSignal mapReplace:@NO]
         startWith:@YES];
