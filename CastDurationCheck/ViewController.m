@@ -14,6 +14,9 @@
 #import <ConnectSDK.h>
 #import <ReactiveCocoa.h>
 
+static NSString *const VIDEO0_URL = @"http://ec2-54-201-108-205.us-west-2.compute.amazonaws.com/samples/media/video.mp4";
+static NSString *const VIDEO1_URL = @"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+
 @interface ViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton *connectButton;
@@ -42,14 +45,36 @@
     }];
     RACSignal *buttonsEnabledSignal = [[deviceReadySignal mapReplace:@YES]
         startWith:@NO];
-    RACCommand *deviceConnectedCommand = [[RACCommand alloc]
+
+    RACCommand *playVideo0Command = [[RACCommand alloc]
         initWithEnabled:buttonsEnabledSignal
             signalBlock:^RACSignal *(id input) {
+                return [RACSignal return:VIDEO0_URL];
+            }];
+    self.playVideo0Button.rac_command = playVideo0Command;
+
+    RACCommand *playVideo1Command = [[RACCommand alloc]
+        initWithEnabled:buttonsEnabledSignal
+            signalBlock:^RACSignal *(id input) {
+                return [RACSignal return:VIDEO1_URL];
+            }];
+    self.playVideo1Button.rac_command = playVideo1Command;
+
+    [[RACSignal merge:@[playVideo0Command.executionSignals,
+                        playVideo1Command.executionSignals]]
+        subscribeNext:^(RACSignal *videoUrlStringSignal) {
+            [videoUrlStringSignal subscribeNext:^(NSString *videoUrlString) {
+                [self playVideoWithURLString:videoUrlString];
+            }];
+        }];
+
+    RACCommand *stopVideoCommand = [[RACCommand alloc]
+        initWithEnabled:buttonsEnabledSignal
+            signalBlock:^RACSignal *(id input) {
+                [self stopVideo];
                 return [RACSignal empty];
             }];
-    self.playVideo0Button.rac_command = deviceConnectedCommand;
-    self.playVideo1Button.rac_command = deviceConnectedCommand;
-    self.stopButton.rac_command = deviceConnectedCommand;
+    self.stopButton.rac_command = stopVideoCommand;
 
     [currentDeviceSignal subscribeNext:^(ConnectableDevice *device) {
         [device connect];
@@ -75,17 +100,15 @@
     [[DiscoveryManager sharedManager] startDiscovery];
 }
 
-- (IBAction)playVideo0:(id)sender {
-    [self playVideoWithURLString:@"http://ec2-54-201-108-205.us-west-2.compute.amazonaws.com/samples/media/video.mp4"];
-}
-- (IBAction)playVideo1:(id)sender {
-    [self playVideoWithURLString:@"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"];
-}
-- (IBAction)stop:(id)sender {
+- (void)stopVideo {
+    NSLog(@"stopping video"); return;
+
     [self.launchObject.mediaControl stopWithSuccess:nil failure:nil];
 }
 
 - (void)playVideoWithURLString:(NSString *)urlString {
+    NSLog(@"playing %@", urlString); return;
+
     self.launchObject = nil;
 
     NSURL *mediaURL = [NSURL URLWithString:urlString];
