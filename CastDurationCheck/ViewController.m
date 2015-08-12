@@ -73,10 +73,15 @@ static NSString *const VIDEO1_URL = @"http://commondatastorage.googleapis.com/gt
     RACCommand *stopVideoCommand = [[RACCommand alloc]
         initWithEnabled:buttonsEnabledSignal
             signalBlock:^RACSignal *(id input) {
-                [self stopVideo];
-                return [RACSignal empty];
+                // this signal doesn't require subscription, because it's sent
+                // by the command
+                return [self stopVideo];
             }];
     self.stopButton.rac_command = stopVideoCommand;
+
+    [stopVideoCommand.executionSignals subscribeNext:^(id x) {
+        NSLog(@"stop success %@", x);
+    }];
 
     [currentDeviceSignal subscribeNext:^(ConnectableDevice *device) {
         [device connect];
@@ -102,10 +107,22 @@ static NSString *const VIDEO1_URL = @"http://commondatastorage.googleapis.com/gt
     [[DiscoveryManager sharedManager] startDiscovery];
 }
 
-- (void)stopVideo {
+- (RACSignal *)stopVideo {
     NSLog(@"stopping video");
 
-    [self.launchObject.mediaControl stopWithSuccess:nil failure:nil];
+    RACSignal *stopVideoSignal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        [self.launchObject.mediaControl stopWithSuccess:^(id responseObject) {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+                                                failure:^(NSError *error) {
+                                                    [subscriber sendError:error];
+                                                }];
+
+        return nil;
+    }];
+
+    return stopVideoSignal;
 }
 
 - (RACSignal *)playVideoWithURLString:(NSString *)urlString {
