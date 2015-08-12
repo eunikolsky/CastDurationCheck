@@ -60,13 +60,15 @@ static NSString *const VIDEO1_URL = @"http://commondatastorage.googleapis.com/gt
             }];
     self.playVideo1Button.rac_command = playVideo1Command;
 
-    [[RACSignal merge:@[playVideo0Command.executionSignals,
-                        playVideo1Command.executionSignals]]
-        subscribeNext:^(RACSignal *videoUrlStringSignal) {
-            [videoUrlStringSignal subscribeNext:^(NSString *videoUrlString) {
-                [self playVideoWithURLString:videoUrlString];
-            }];
-        }];
+    [[[[[RACSignal merge:@[playVideo0Command.executionSignals,
+                           playVideo1Command.executionSignals]]
+        flatten] map:^(NSString *videoURLString) {
+        return [self playVideoWithURLString:videoURLString];
+    }] flatten] subscribeNext:^(id x) {
+        // this useless subscription is required to kick in playing, because
+        // the signal is cold by default
+        NSLog(@"play success %@", x);
+    }];
 
     RACCommand *stopVideoCommand = [[RACCommand alloc]
         initWithEnabled:buttonsEnabledSignal
@@ -101,34 +103,49 @@ static NSString *const VIDEO1_URL = @"http://commondatastorage.googleapis.com/gt
 }
 
 - (void)stopVideo {
-    NSLog(@"stopping video"); return;
+    NSLog(@"stopping video");
 
     [self.launchObject.mediaControl stopWithSuccess:nil failure:nil];
 }
 
-- (void)playVideoWithURLString:(NSString *)urlString {
-    NSLog(@"playing %@", urlString); return;
+- (RACSignal *)playVideoWithURLString:(NSString *)urlString {
+    NSLog(@"playing %@", urlString);
 
     self.launchObject = nil;
 
-    NSURL *mediaURL = [NSURL URLWithString:urlString];
-    NSString *title = @"title";
-    NSString *description = @"description";
-    NSString *mimeType = @"video/mp4";
-    BOOL shouldLoop = NO;
+    RACSignal *playVideoSignal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        NSURL *mediaURL = [NSURL URLWithString:urlString];
+        MediaInfo *mediaInfo = [self videoInfoWithURL:mediaURL];
 
-    MediaInfo *mediaInfo = [[MediaInfo alloc] initWithURL:mediaURL mimeType:mimeType];
-    mediaInfo.title = title;
-    mediaInfo.description = description;
+        [self.device.mediaPlayer playMediaWithMediaInfo:mediaInfo
+                                             shouldLoop:NO
+                                                success:^(MediaLaunchObject *launchObject) {
+                                                    NSLog(@"display video success");
+                                                    self.launchObject = launchObject;
+//                                                [self subscribeToPlayState];
 
-    [self.device.mediaPlayer playMediaWithMediaInfo:mediaInfo shouldLoop:shouldLoop
-                               success:^(MediaLaunchObject *launchObject) {
-                                   NSLog(@"display video success");
-                                   self.launchObject = launchObject;
-                                   [self subscribeToPlayState];
-                               } failure:^(NSError *error) {
-                                   NSLog(@"display video failure: %@", error.localizedDescription);
-                               }];
+                                                    [subscriber sendNext:launchObject];
+                                                    [subscriber sendCompleted];
+                                                }
+                                                failure:^(NSError *error) {
+                                                    NSLog(@"display video failure: %@",
+                                                          error.localizedDescription);
+
+                                                    [subscriber sendError:error];
+                                                }];
+
+        return nil;
+    }];
+
+    return playVideoSignal;
+}
+
+- (MediaInfo *)videoInfoWithURL:(NSURL *)mediaURL {
+    MediaInfo *mediaInfo = [[MediaInfo alloc] initWithURL:mediaURL
+                                                 mimeType:@"video/mp4"];
+    mediaInfo.title = @"title";
+    mediaInfo.description = @"description";
+    return mediaInfo;
 }
 
 - (void)subscribeToPlayState {
