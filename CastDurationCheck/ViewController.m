@@ -25,7 +25,6 @@ static NSString *const VIDEO1_URL = @"http://commondatastorage.googleapis.com/gt
 @property (weak, nonatomic) IBOutlet UIButton *stopButton;
 @property (weak, nonatomic) IBOutlet UILabel *labelDuration;
 
-@property (nonatomic, strong) ConnectableDevice *device;
 @property (nonatomic, strong) MediaLaunchObject *launchObject;
 
 @end
@@ -36,7 +35,12 @@ static NSString *const VIDEO1_URL = @"http://commondatastorage.googleapis.com/gt
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
-    RACSignal *currentDeviceSignal = RACObserve(self, device);
+    DiscoveryManager *mgr = [DiscoveryManager sharedManager];
+    RACSignal *currentDeviceSignal = mgr.devicePicker.rac_selectDeviceSignal;
+
+    [currentDeviceSignal subscribeNext:^(ConnectableDevice *device) {
+        [device connect];
+    }];
 
     RACSignal *deviceReadySignal = [[currentDeviceSignal filter:^BOOL(id value) {
         return nil != value;
@@ -60,11 +64,19 @@ static NSString *const VIDEO1_URL = @"http://commondatastorage.googleapis.com/gt
             }];
     self.playVideo1Button.rac_command = playVideo1Command;
 
-    [[[[[RACSignal merge:@[playVideo0Command.executionSignals,
-                           playVideo1Command.executionSignals]]
-        flatten] map:^(NSString *videoURLString) {
-        return [self playVideoWithURLString:videoURLString];
-    }] flatten] subscribeNext:^(id x) {
+    [[[[RACSignal combineLatest:@[
+        [[RACSignal merge:@[playVideo0Command.executionSignals,
+                            playVideo1Command.executionSignals]]
+            flatten],
+        [deviceReadySignal flatten]
+    ]]
+        map:^(RACTuple *tuple) {
+            NSString *videoURLString = tuple.first;
+            ConnectableDevice *device = tuple.second;
+            id<MediaPlayer> mediaPlayer = device.mediaPlayer;
+            return [self playVideoWithURLString:videoURLString
+                                  onMediaPlayer:mediaPlayer];
+        }] flatten] subscribeNext:^(id x) {
         // this useless subscription is required to kick in playing, because
         // the signal is cold by default
         NSLog(@"play success %@", x);
@@ -83,15 +95,7 @@ static NSString *const VIDEO1_URL = @"http://commondatastorage.googleapis.com/gt
         NSLog(@"stop success %@", x);
     }];
 
-    [currentDeviceSignal subscribeNext:^(ConnectableDevice *device) {
-        [device connect];
-    }];
-
-    DiscoveryManager *mgr = [DiscoveryManager sharedManager];
-    RACSignal *selectDeviceSignal = mgr.devicePicker.rac_selectDeviceSignal;
-    RAC(self, device) = selectDeviceSignal;
-
-    RACSignal *connectEnabledSignal = [[selectDeviceSignal mapReplace:@NO]
+    RACSignal *connectEnabledSignal = [[currentDeviceSignal mapReplace:@NO]
         startWith:@YES];
     RACCommand *connectCommand = [[RACCommand alloc]
         initWithEnabled:connectEnabledSignal
@@ -125,7 +129,8 @@ static NSString *const VIDEO1_URL = @"http://commondatastorage.googleapis.com/gt
     return stopVideoSignal;
 }
 
-- (RACSignal *)playVideoWithURLString:(NSString *)urlString {
+- (RACSignal *)playVideoWithURLString:(NSString *)urlString
+                        onMediaPlayer:(id<MediaPlayer>)mediaPlayer {
     NSLog(@"playing %@", urlString);
 
     self.launchObject = nil;
@@ -134,22 +139,22 @@ static NSString *const VIDEO1_URL = @"http://commondatastorage.googleapis.com/gt
         NSURL *mediaURL = [NSURL URLWithString:urlString];
         MediaInfo *mediaInfo = [self videoInfoWithURL:mediaURL];
 
-        [self.device.mediaPlayer playMediaWithMediaInfo:mediaInfo
-                                             shouldLoop:NO
-                                                success:^(MediaLaunchObject *launchObject) {
-                                                    NSLog(@"display video success");
-                                                    self.launchObject = launchObject;
+        [mediaPlayer playMediaWithMediaInfo:mediaInfo
+                                 shouldLoop:NO
+                                    success:^(MediaLaunchObject *launchObject) {
+                                        NSLog(@"display video success");
+                                        self.launchObject = launchObject;
 //                                                [self subscribeToPlayState];
 
-                                                    [subscriber sendNext:launchObject];
-                                                    [subscriber sendCompleted];
-                                                }
-                                                failure:^(NSError *error) {
-                                                    NSLog(@"display video failure: %@",
-                                                          error.localizedDescription);
+                                        [subscriber sendNext:launchObject];
+                                        [subscriber sendCompleted];
+                                    }
+                                    failure:^(NSError *error) {
+                                        NSLog(@"display video failure: %@",
+                                              error.localizedDescription);
 
-                                                    [subscriber sendError:error];
-                                                }];
+                                        [subscriber sendError:error];
+                                    }];
 
         return nil;
     }];
